@@ -1,0 +1,26 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+Description: Update a CloudFlare DNS Entry based on the Source IP of the Request (DDNS)
+Resources:
+  updatedynamicdns:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Handler: index.handler
+      Runtime: nodejs12.x
+      CodeUri: .
+      Description: >-
+        Update a CloudFlare DNS Entry based on the Source IP of the Request
+        (DDNS)
+      MemorySize: 128
+      Timeout: 30
+      Events:
+        Api1:
+          Type: Api
+          Properties:
+            Path: /update_ddns
+            Method: ANY
+      Environment:
+        Variables:
+          CLOUDFLARE_TOKEN: CF_TOKEN
+          CLOUDFLARE_ZONE: CF_ZONE_ID
+          DOMAIN: DOMAIN
